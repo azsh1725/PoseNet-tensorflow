@@ -45,6 +45,7 @@ init = tf.global_variables_initializer()
 saver = tf.train.Saver()
 
 train_batches_per_epoch = int(np.floor(1000 / BATCH_SIZE))
+next_element = train_iterator.get_next()
 
 with tf.Session() as sess:
     sess.run(init)
@@ -54,7 +55,7 @@ with tf.Session() as sess:
         batch_num = 0
         while True:
             try:
-                x_train, y_pose_train, y_rotation_train = sess.run(train_iterator.get_next())
+                x_train, y_pose_train, y_rotation_train = sess.run(next_element)
 
                 _, loss, summary_val = sess.run([opt, final_loss, loss_summary], feed_dict={"x:0": x_train,
                                                                                             "y_pose:0": y_pose_train,
