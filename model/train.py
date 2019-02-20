@@ -52,6 +52,7 @@ with tf.Session() as sess:
     writer.add_graph(tf.get_default_graph())
     posenet_model.load_initial_weights(sess)
     for epoch in range(EPOCH_NUM):
+        sess.run(train_iterator.initializer)
         batch_num = 0
         while True:
             try:

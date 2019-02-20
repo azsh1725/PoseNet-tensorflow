@@ -50,7 +50,7 @@ def get_train_and_test_iterator(batch_size):
     test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_pose_test, y_rotation_test))
     test_dataset = test_dataset.map(read_image)
 
-    train_iterator = train_dataset.make_one_shot_iterator()
-    test_iterator = test_dataset.make_one_shot_iterator()
+    train_iterator = train_dataset.make_initializable_iterator()
+    test_iterator = test_dataset.make_initializable_iterator()
 
     return train_iterator, test_iterator
