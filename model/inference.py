@@ -26,7 +26,7 @@ if os.path.exists(CHECKPOINT_PATH):
     saver = tf.train.Saver()
 
     with tf.Session() as sess:
-        sess.run(init())
+        sess.run(init)
         image_resized_value = sess.run(tf.expand_dims(image_resized, 0))
 
         saver.restore(sess, CHECKPOINT_PATH + ckpt_name)
