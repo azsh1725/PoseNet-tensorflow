@@ -6,7 +6,9 @@ CHECKPOINT_PATH = "../checkpoints/"
 
 if os.path.exists(CHECKPOINT_PATH):
     img_path = sys.argv[1]
-    print("You run inference for file : {}".format(img_path))
+    ckpt_name = sys.argv[2]
+    print("You run inference for file: {}".format(img_path))
+    print("You run inference with ckpt: {}".format(ckpt_name))
 
     image_string = tf.read_file(img_path)
     image_decoded = tf.image.decode_png(image_string, 3) / 255
@@ -23,18 +25,14 @@ if os.path.exists(CHECKPOINT_PATH):
 
     saver = tf.train.Saver()
 
-    files = os.listdir("./")
-    files.sort(key=os.path.getmtime, reverse=True)
-
-    last_checkpoint_name = files[0]
-
     with tf.Session() as sess:
         sess.run(init())
+        image_resized_value = sess.run(tf.expand_dims(image_resized, 0))
 
-        saver.restore(sess, CHECKPOINT_PATH + last_checkpoint_name)
+        saver.restore(sess, CHECKPOINT_PATH + ckpt_name)
 
         predicted_pose, predicted_rotation = sess.run([pose_prediction, rotation_prediction],
-                                                      feed_dict={x: [image_resized]})
+                                                      feed_dict={x: image_resized_value})
 
         print("predicted pose: {}".format(predicted_pose))
         print("predicted rotation: {}".format(predicted_rotation))
